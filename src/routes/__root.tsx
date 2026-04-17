@@ -29,16 +29,28 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Pupsy — Fresh, personalised meals for your dog" },
+      {
+        name: "description",
+        content:
+          "Pupsy creates fresh, portion-controlled meals for your dog based on breed, age, weight and activity. Built on data. Delivered across India.",
+      },
+      { property: "og:title", content: "Pupsy — Fresh, personalised meals for your dog" },
+      {
+        property: "og:description",
+        content:
+          "Personalised fresh meals, portioned by breed, age, and activity. Built on data. Delivered to your door.",
+      },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=DM+Sans:wght@300;400;500&display=swap",
+      },
       {
         rel: "stylesheet",
         href: appCss,
