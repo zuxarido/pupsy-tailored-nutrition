@@ -1,26 +1,30 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Nav } from "@/components/landing/Nav";
+import { Hero } from "@/components/landing/Hero";
+import { HowItWorks } from "@/components/landing/HowItWorks";
+import { WhyPupsy } from "@/components/landing/WhyPupsy";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
-
 function Index() {
-  return <PlaceholderIndex />;
+  return (
+    <main className="min-h-screen bg-background">
+      <Nav />
+      <Hero />
+      <HowItWorks />
+      <WhyPupsy />
+      <footer className="border-t border-[var(--color-border)] py-10">
+        <div className="mx-auto flex max-w-[1320px] flex-col items-start justify-between gap-4 px-6 md:flex-row md:items-center md:px-10">
+          <div className="font-serif text-xl text-foreground">
+            Pupsy<span className="text-accent">.</span>
+          </div>
+          <div className="text-sm text-muted-foreground">
+            Made with care in Bengaluru · Mumbai · Delhi
+          </div>
+        </div>
+      </footer>
+    </main>
+  );
 }
