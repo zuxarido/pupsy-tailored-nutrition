@@ -1,41 +1,52 @@
-import dogImg from "@/assets/pupsy-dog.png";
+import Link from "next/link";
+import Image from "next/image";
+import { Icon } from "@/components/ui/Icon";
+
+const trustItems = [
+  { icon: "vet", label: "Vet-Formulated" },
+  { icon: "sunrise", label: "Fresh Every Morning" },
+  { icon: "no-preservatives", label: "No Preservatives" },
+  { icon: "scale", label: "Portioned for Your Dog" },
+];
 
 export function Hero() {
   return (
     <section className="w-full">
-      <div className="mx-auto grid max-w-[1320px] grid-cols-1 gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:gap-12 md:px-10 md:pb-24 md:pt-8">
+      <div className="mx-auto grid max-w-[1320px] grid-cols-1 gap-10 px-6 pb-10 pt-6 md:grid-cols-2 md:gap-12 md:px-10 md:pb-24 md:pt-8">
         {/* Left column */}
         <div className="flex flex-col justify-center">
           <span className="pill-badge w-fit">Freshly made &amp; delivered</span>
 
           <h1 className="headline-xl mt-7 text-[clamp(2.6rem,6vw,4.6rem)] text-foreground">
-            Food as <em className="accent-italic">good</em> as your dog deserves.
+            Real food. Cooked <em className="accent-italic">fresh.</em> At your
+            door every morning.
           </h1>
 
           <p className="mt-6 max-w-[480px] text-base text-muted-foreground md:text-lg">
-            Personalised fresh meals, portioned by breed, age, and activity. Built on data.
-            Delivered to your door.
+            Personalised daily meals for your dog — delivered like a dabbawala,
+            every single day. Built on data. Portioned to the gram.
           </p>
 
           <div className="mt-9 flex flex-wrap items-center gap-6">
-            <a href="#plan" className="btn-pill-primary">
+            <Link href="/get-started" className="btn-pill-primary">
               Build your dog&rsquo;s plan
-            </a>
-            <a href="#how" className="link-ghost">
-              See how it works
-            </a>
+            </Link>
+            <Link href="/auth" className="link-ghost font-medium">
+              Log in
+            </Link>
           </div>
         </div>
 
         {/* Right column — hero panel */}
         <div className="relative min-h-[520px] overflow-hidden rounded-[28px] bg-[var(--color-hero-panel)] md:min-h-[620px]">
-          {/* Dog illustration anchored to bottom */}
-          <img
-            src={dogImg}
+          {/* Dog illustration */}
+          <Image
+            src="/pupsy-dog.png"
             alt="A friendly illustrated dog mascot for Pupsy"
             width={896}
             height={1024}
             className="absolute bottom-0 left-1/2 w-[80%] max-w-[440px] -translate-x-1/2 select-none"
+            priority
           />
 
           {/* Floating meal card */}
@@ -61,6 +72,21 @@ export function Hero() {
               </span>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Trust bar */}
+      <div className="border-t border-[var(--color-border)]">
+        <div className="mx-auto flex max-w-[1320px] flex-wrap items-center justify-center gap-8 px-6 py-5 md:justify-between md:px-10">
+          {trustItems.map((item) => (
+            <div
+              key={item.label}
+              className="flex items-center gap-2.5 text-sm text-muted-foreground"
+            >
+              <Icon name={item.icon} size={18} />
+              {item.label}
+            </div>
+          ))}
         </div>
       </div>
     </section>
