@@ -37,11 +37,11 @@ export function Footer() {
           {/* Brand column */}
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center">
-            <img 
-              src="/logo-transparent.png" 
-              alt="Pupsy Logo" 
-              className="h-8 md:h-10 w-auto" 
-            />
+              <img
+                src="/logov1-removebg-preview.png"
+                alt="Pupsy Logo"
+                className="h-8 md:h-10 w-auto"
+              />
             </Link>
             <p className="mt-4 max-w-[280px] text-sm leading-relaxed text-muted-foreground">
               Fresh, personalised meals for your dog. Cooked daily. Delivered to your door across India.

@@ -85,7 +85,7 @@ export function Nav() {
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
     window.addEventListener("scroll", onScroll, { passive: true });
-    
+
     // Initial fetch
     fetchUser();
 
@@ -119,19 +119,18 @@ export function Nav() {
 
   return (
     <nav
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-        scrolled
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled
           ? "bg-background/90 backdrop-blur-md shadow-[0_1px_0_var(--color-border)]"
           : "bg-transparent"
-      }`}
+        }`}
     >
       <div className="mx-auto flex max-w-[1320px] items-center justify-between px-6 py-5 md:px-10">
         {/* Logo */}
         <Link href="/" className="flex items-center">
-          <img 
-            src="/logo-transparent.png" 
-            alt="Pupsy Logo" 
-            className="h-8 md:h-10 w-auto" 
+          <img
+            src="/logov1-removebg-preview.png"
+            alt="Pupsy Logo"
+            className="h-8 md:h-10 w-auto"
           />
         </Link>
 

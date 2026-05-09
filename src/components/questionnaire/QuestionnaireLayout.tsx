@@ -21,10 +21,10 @@ export function QuestionnaireLayout({ step, totalSteps, onBack, children }: Prop
         <div className="mx-auto flex max-w-[900px] items-center justify-between px-6 py-3">
           {/* Logo — links back home */}
           <Link href="/" className="flex items-center transition-opacity hover:opacity-70">
-            <img 
-              src="/logo-transparent.png" 
-              alt="Pupsy Logo" 
-              className="h-7 w-auto" 
+            <img
+              src="/logov1-removebg-preview.png"
+              alt="Pupsy Logo"
+              className="h-7 w-auto"
             />
           </Link>
 
@@ -79,7 +79,7 @@ export function QuestionnaireLayout({ step, totalSteps, onBack, children }: Prop
         <div className="w-full max-w-[580px] rounded-[32px] border border-[var(--color-border)] bg-background p-6 md:p-10 shadow-[0_24px_64px_-12px_rgba(59,42,26,0.12)] relative">
           {/* Subtle background element to fill space */}
           <div className="absolute top-0 right-0 -mr-16 -mt-16 h-64 w-64 rounded-full bg-accent/[0.03] blur-3xl" />
-          
+
           {/* Back button inside card */}
           {step > 1 && (
             <button
@@ -96,20 +96,20 @@ export function QuestionnaireLayout({ step, totalSteps, onBack, children }: Prop
           <div key={step} className="quiz-step-enter relative z-10 flex flex-col items-center">
             {children}
           </div>
-          
+
           <div className="mt-8 flex items-center justify-center gap-5 pt-6 border-t border-[var(--color-border)] relative z-0 pointer-events-none">
-             <div className="flex flex-col items-center gap-1.5">
-                <Icon name="vet" size={14} className="text-accent/60" />
-                <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-muted-foreground/80">Vet Formulated</span>
-             </div>
-             <div className="flex flex-col items-center gap-1.5">
-                <Icon name="check" size={14} className="text-accent/60" />
-                <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-muted-foreground/80">Human Grade</span>
-             </div>
-             <div className="flex flex-col items-center gap-1.5">
-                <Icon name="cook" size={14} className="text-accent/60" />
-                <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-muted-foreground/80">Freshly Cooked</span>
-             </div>
+            <div className="flex flex-col items-center gap-1.5">
+              <Icon name="vet" size={14} className="text-accent/60" />
+              <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-muted-foreground/80">Vet Formulated</span>
+            </div>
+            <div className="flex flex-col items-center gap-1.5">
+              <Icon name="check" size={14} className="text-accent/60" />
+              <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-muted-foreground/80">Human Grade</span>
+            </div>
+            <div className="flex flex-col items-center gap-1.5">
+              <Icon name="cook" size={14} className="text-accent/60" />
+              <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-muted-foreground/80">Freshly Cooked</span>
+            </div>
           </div>
         </div>
       </div>
