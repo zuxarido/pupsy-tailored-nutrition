@@ -22,9 +22,9 @@ export function QuestionnaireLayout({ step, totalSteps, onBack, children }: Prop
           {/* Logo — links back home */}
           <Link href="/" className="flex items-center transition-opacity hover:opacity-70">
             <img 
-              src="/logov1.png" 
+              src="/logo-transparent.png" 
               alt="Pupsy Logo" 
-              className="h-7 w-auto mix-blend-multiply" 
+              className="h-7 w-auto" 
             />
           </Link>
 

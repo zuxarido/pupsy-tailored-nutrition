@@ -129,9 +129,9 @@ export function Nav() {
         {/* Logo */}
         <Link href="/" className="flex items-center">
           <img 
-            src="/logov1.png" 
+            src="/logo-transparent.png" 
             alt="Pupsy Logo" 
-            className="h-8 md:h-10 w-auto mix-blend-multiply" 
+            className="h-8 md:h-10 w-auto" 
           />
         </Link>
 
