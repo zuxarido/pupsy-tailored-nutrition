@@ -21,7 +21,11 @@ export function QuestionnaireLayout({ step, totalSteps, onBack, children }: Prop
         <div className="mx-auto flex max-w-[900px] items-center justify-between px-6 py-3">
           {/* Logo — links back home */}
           <Link href="/" className="flex items-center transition-opacity hover:opacity-70">
-            <img src="/logov1.png" alt="Pupsy Logo" className="h-7 w-auto" />
+            <img 
+              src="/logov1.png" 
+              alt="Pupsy Logo" 
+              className="h-7 w-auto mix-blend-multiply" 
+            />
           </Link>
 
           {/* Progress & controls */}
