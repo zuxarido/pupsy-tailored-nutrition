@@ -1,0 +1,28 @@
+1. Landing Page (/)
+   - Overview of Pupsy, "Why Fresh", Testimonials, How It Works.
+   - Primary Call-to-Action: "Build your plan" -> Redirects to /get-started.
+
+2. Questionnaire Flow (/get-started)
+   - Step 1: Owner Name (Saves to customer profile)
+   - Step 2-10: Dog details (Name, Breed, Age, Sex, Weight, Body Condition, Activity, Health, Current Food).
+   - Step 11: Results. Calculates recommended calories and price per day based on given parameters.
+
+3. Authentication (/auth or inline at Checkout)
+   - Email Magic Link or Phone OTP (Twilio).
+   - Google OAuth (direct redirect to secure client parsing).
+   - On success, redirect to checkout.
+
+4. Checkout & Subscription (/checkout)
+   - Displays subscription summary (dog profile details from local storage).
+   - Verifies session exists; if not, triggers inline auth.
+   - Razorpay integration for payments.
+   - Saves final `dog_profiles` and `subscriptions` rows to Supabase database.
+
+5. User Dashboard (/dashboard)
+   - Central hub after logging in or paying.
+   - Shows active subscription, upcoming deliveries, meal plan details.
+
+6. Wellness Tracker (/wellness)
+   - User inputs daily logs relating to their dog's health (Energy, Digestion, Coat, Meal habits).
+   - Visualizes long-term trends (e.g., Weight changes over 3 months).
+   - Provides calorie insights vs actual wellness.
