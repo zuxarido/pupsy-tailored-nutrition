@@ -24,7 +24,7 @@ export function QuestionnaireLayout({ step, totalSteps, onBack, children }: Prop
             <img
               src="/logov1-removebg-preview.png"
               alt="Pupsy Logo"
-              className="h-7 w-auto"
+              className="h-9 w-auto"
             />
           </Link>
 

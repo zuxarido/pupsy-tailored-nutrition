@@ -40,7 +40,7 @@ export function Footer() {
               <img
                 src="/logov1-removebg-preview.png"
                 alt="Pupsy Logo"
-                className="h-8 md:h-10 w-auto"
+                className="h-10 md:h-12 w-auto"
               />
             </Link>
             <p className="mt-4 max-w-[280px] text-sm leading-relaxed text-muted-foreground">

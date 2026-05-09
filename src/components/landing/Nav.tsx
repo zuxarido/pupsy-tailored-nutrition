@@ -130,7 +130,7 @@ export function Nav() {
           <img
             src="/logov1-removebg-preview.png"
             alt="Pupsy Logo"
-            className="h-8 md:h-10 w-auto"
+            className="h-10 md:h-12 w-auto"
           />
         </Link>
 
