@@ -11,6 +11,8 @@ export type DogProfile = {
   activity: string;
   healthConditions: string[];
   currentFood: string;
+  recommendedRecipe?: string;
+  dailyGrams?: number;
 };
 
 export const defaultProfile: DogProfile = {

@@ -10,7 +10,7 @@ const ingredients = [
 ];
 
 const badges = [
-  { icon: "cook", label: "FSSAI-licensed kitchen" },
+  { icon: "cook", label: "Commercial kitchen" },
   { icon: "vet", label: "Vet-formulated recipes" },
   { icon: "sunrise", label: "Cooked & delivered same day" },
 ];
@@ -27,7 +27,7 @@ export function FreshnessStory() {
           <div className="flex flex-col justify-end gap-4">
             <p className="max-w-[480px] text-base text-muted-foreground md:text-lg">
               Human-grade, locally sourced, seasonal. No fillers, no by-products, no preservatives.
-              Every meal is cooked fresh in our FSSAI-licensed kitchen.
+              Every meal is cooked fresh in our commercial kitchen. We don't use any preservatives or fillers. After cooking, the food is immediately vacuum-sealed and blast-chilled.
             </p>
           </div>
         </div>

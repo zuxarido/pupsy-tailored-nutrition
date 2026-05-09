@@ -107,7 +107,7 @@ export function Testimonials() {
         <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
           <div className="flex items-center gap-2">
             <Icon name="check" size={18} className="text-accent" />
-            FSSAI Certified
+            Human-Grade Ingredients
           </div>
           <div className="hidden h-4 w-px bg-[var(--color-border)] sm:block" />
           <div className="flex items-center gap-2">

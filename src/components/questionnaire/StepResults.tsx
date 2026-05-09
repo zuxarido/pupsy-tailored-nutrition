@@ -1,188 +1,230 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import type { DogProfile } from "@/types/dog-profile";
 import { Icon } from "@/components/ui/Icon";
+import { getPricing } from "@/lib/pricing";
 
 type Recipe = {
+  id: string;
   name: string;
-  icon: string;
+  icon: any;
   protein: string;
   ingredients: string;
   tags: string[];
   bestFor: string;
+  caloriesPer100g: number;
 };
 
-const allRecipes: Recipe[] = [
+const PUPSY_RECIPES: Recipe[] = [
   {
-    name: "Chicken & Brown Rice",
-    icon: "chicken",
-    protein: "Chicken breast",
-    ingredients: "Chicken, Brown Rice, Carrots, Spinach, Turmeric",
-    tags: ["High protein", "Omega-3 rich"],
-    bestFor: "All life stages",
-  },
-  {
-    name: "Lamb & Veggies",
-    icon: "lamb",
-    protein: "Lamb mince",
-    ingredients: "Lamb Mince, Oats, Peas, Pumpkin",
-    tags: ["Iron-rich", "Grain-friendly"],
-    bestFor: "Active dogs",
-  },
-  {
-    name: "Egg & Lentil",
-    icon: "egg",
-    protein: "Farm eggs",
-    ingredients: "Eggs, Lentils, Carrots, Rice, Ghee",
-    tags: ["Vegetarian", "Gentle"],
+    id: "veg",
+    name: "Paneer & Rice",
+    icon: "paw",
+    protein: "Paneer & Moong Dal",
+    ingredients: "Paneer, Moong Dal, White Rice, Pumpkin, Fresh Veggies",
+    tags: ["Vegetarian", "Gentle stomach"],
     bestFor: "Sensitive stomachs",
+    caloriesPer100g: 130
   },
   {
-    name: "Mutton & Sweet Potato",
-    icon: "meat",
-    protein: "Mutton",
-    ingredients: "Mutton, Sweet Potato, Beans, Ginger",
-    tags: ["Grain-free", "Joint support"],
-    bestFor: "Senior dogs",
+    id: "senior",
+    name: "Chicken & Quinoa",
+    icon: "chicken",
+    protein: "Chicken & Quinoa",
+    ingredients: "Chicken, Quinoa, Carrots, Green Beans, Bone Broth",
+    tags: ["High protein", "Senior dogs"],
+    bestFor: "Senior or overweight dogs",
+    caloriesPer100g: 88
   },
+  {
+    id: "chicken_rice",
+    name: "Chicken & Rice",
+    icon: "chicken",
+    protein: "Chicken & Liver",
+    ingredients: "Chicken Breast, Chicken Liver, White Rice, Farm Eggs, Carrots, Ghee",
+    tags: ["All life stages", "Energy boost"],
+    bestFor: "Active dogs",
+    caloriesPer100g: 149
+  }
 ];
 
 function getRecommendation(profile: DogProfile): { primary: Recipe; alternate: Recipe } {
-  const hasChickenAllergy = profile.healthConditions.includes("Chicken allergy");
-  const hasGrainAllergy = profile.healthConditions.includes("Grain allergy");
   const isSenior = profile.age === "senior";
   const hasSensitiveStomach = profile.healthConditions.includes("Sensitive stomach");
+  const hasGrainAllergy = profile.healthConditions.includes("Grain allergy");
 
-  let primary = allRecipes[0];
-  let alternate = allRecipes[1];
+  let primary = PUPSY_RECIPES[2]; // Default: Chicken & Rice
+  let alternate = PUPSY_RECIPES[1]; // Chicken & Quinoa
 
-  if (hasChickenAllergy) {
-    primary = allRecipes[1];
-    alternate = allRecipes[3];
-  } else if (hasSensitiveStomach) {
-    primary = allRecipes[2];
-    alternate = allRecipes[0];
-  } else if (isSenior) {
-    primary = allRecipes[3];
-    alternate = allRecipes[2];
-  } else if (hasGrainAllergy) {
-    primary = allRecipes[3];
-    alternate = allRecipes[0];
-  } else if (profile.activity === "high") {
-    primary = allRecipes[1];
-    alternate = allRecipes[0];
+  if (hasSensitiveStomach) {
+    primary = PUPSY_RECIPES[0]; // Paneer & Rice
+    alternate = PUPSY_RECIPES[2];
+  } else if (isSenior || hasGrainAllergy) {
+    primary = PUPSY_RECIPES[1]; // Chicken & Quinoa
+    alternate = PUPSY_RECIPES[2];
+  } else if (profile.activity === "low") {
+    primary = PUPSY_RECIPES[1]; // Lower kcal for sedentary
+    alternate = PUPSY_RECIPES[0];
   }
 
   return { primary, alternate };
 }
 
-function calculatePortion(profile: DogProfile): number {
+function calculateDailyCalories(profile: DogProfile): number {
   const w = parseFloat(profile.weight) || 15;
-  let calories = 30 * w + 70;
-  if (profile.activity === "high") calories *= 1.3;
-  else if (profile.activity === "low") calories *= 0.8;
-  if (profile.age === "puppy") calories *= 1.2;
-  if (profile.age === "senior") calories *= 0.9;
-  return Math.round(calories / 1.5);
+  const baseGoal = w * 20;
+  let multiplier = 1.0;
+  
+  if (profile.activity === "high") multiplier = 1.2;
+  else if (profile.activity === "low") multiplier = 0.8;
+  
+  return Math.round(baseGoal * multiplier);
 }
 
-function calculatePrice(portion: number): number {
-  const raw = Math.round(portion * 0.55);
-  return Math.max(99, Math.min(299, raw));
+function calculatePortion(calories: number, caloriesPer100g: number): number {
+  const rawGrams = (calories / caloriesPer100g) * 100;
+  // Round to nearest 50g
+  const roundedGrams = Math.round(rawGrams / 50) * 50;
+  return Math.min(800, roundedGrams); // Cap at 800g as requested
 }
 
 type Props = {
   profile: DogProfile;
+  update: (patch: Partial<DogProfile>) => void;
 };
 
-export function StepResults({ profile }: Props) {
+export function StepResults({ profile, update }: Props) {
   const { primary, alternate } = getRecommendation(profile);
   const [selectedRecipe, setSelectedRecipe] = useState(primary);
 
-  const portion = calculatePortion(profile);
-  const halfPortion = Math.round(portion / 2);
-  const price = calculatePrice(portion);
+  const dailyCalories = calculateDailyCalories(profile);
+  const dailyPortion = calculatePortion(dailyCalories, selectedRecipe.caloriesPer100g);
+  const pricing = getPricing(dailyPortion);
 
+  // Sync recommendation to parent state on mount or recipe change
+  useEffect(() => {
+    update({
+      recommendedRecipe: selectedRecipe.name,
+      dailyGrams: dailyPortion
+    });
+  }, [selectedRecipe.name, dailyPortion]);
+
+  const halfPortion = Math.round(dailyPortion / 2);
   const dogName = profile.name || "Your dog";
 
   return (
     <div className="flex flex-col">
       {/* Reveal header */}
       <div className="text-center">
-        <Icon name="check" size={40} className="text-accent mx-auto" />
-        <h2 className="headline-xl mt-4 text-[clamp(1.8rem,4vw,2.8rem)] text-foreground">
+        <Icon name="check" size={32} className="text-accent mx-auto" />
+        <h2 className="headline-xl mt-3 text-[clamp(1.6rem,3vw,2.4rem)] text-foreground">
           {dogName}&rsquo;s plan is ready!
         </h2>
-        <p className="mt-3 text-sm text-muted-foreground">
+        <p className="mt-2 text-xs text-muted-foreground">
           Based on what you told us, here&rsquo;s what we recommend.
         </p>
       </div>
 
       {/* Primary recommendation card */}
-      <div className="mt-8 rounded-[20px] border border-accent/30 bg-accent/5 p-6">
+      <div className="mt-6 rounded-[20px] border border-accent/30 bg-accent/5 p-5 shadow-sm">
         <div className="flex items-center gap-3">
-          <Icon name={selectedRecipe.icon} size={32} className="text-accent" />
+          <Icon name={selectedRecipe.icon as any} size={28} className="text-accent" />
           <div>
-            <div className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+            <div className="text-[9px] uppercase tracking-[0.14em] text-muted-foreground">
               Recommended recipe
             </div>
-            <h3 className="font-serif text-xl text-foreground">{selectedRecipe.name}</h3>
+            <h3 className="font-serif text-lg text-foreground">{selectedRecipe.name}</h3>
           </div>
         </div>
 
-        <p className="mt-4 text-sm text-muted-foreground">
+        <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
           <strong className="text-foreground">Ingredients:</strong> {selectedRecipe.ingredients}
         </p>
 
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap gap-1.5">
           {selectedRecipe.tags.map((tag) => (
             <span
               key={tag}
-              className="rounded-full bg-[var(--color-tag-fresh-bg)] px-2.5 py-1 text-[11px] text-[var(--color-tag-fresh-fg)]"
+              className="rounded-full bg-[var(--color-tag-fresh-bg)] px-2 py-0.5 text-[10px] text-[var(--color-tag-fresh-fg)]"
             >
               {tag}
             </span>
           ))}
-          <span className="rounded-full bg-[var(--color-tag-vet-bg)] px-2.5 py-1 text-[11px] text-[var(--color-tag-vet-fg)]">
-            Best for: {selectedRecipe.bestFor}
-          </span>
         </div>
       </div>
 
-      {/* Portion + price */}
-      <div className="mt-5 grid grid-cols-2 gap-3">
-        <div className="rounded-[16px] border border-[var(--color-border)] bg-background p-5 text-center">
-          <div className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-            Daily portion
+      {/* Portion & Pricing */}
+      <div className="mt-4 grid grid-cols-2 gap-3">
+        <div className="rounded-[16px] border border-[var(--color-border)] bg-background p-4 text-center shadow-sm flex flex-col justify-center">
+          <div className="text-[9px] uppercase tracking-[0.14em] text-muted-foreground">
+            Daily Portion
           </div>
-          <div className="mt-1 font-serif text-2xl text-foreground">{portion}g</div>
-          <div className="mt-1 text-xs text-muted-foreground">
-            2 x {halfPortion}g packs
+          <div className="mt-0.5 font-serif text-xl text-foreground">{dailyPortion}g</div>
+          <div className="mt-0.5 text-[10px] text-muted-foreground">
+            2 x {halfPortion}g meals
           </div>
         </div>
-        <div className="rounded-[16px] border border-[var(--color-border)] bg-background p-5 text-center">
-          <div className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-            Price
+        <div className="rounded-[16px] border border-accent/40 bg-accent/5 p-4 text-center shadow-sm flex flex-col justify-center relative overflow-hidden">
+          <div className="absolute top-0 inset-x-0 bg-accent text-[9px] uppercase font-bold text-white tracking-wider py-0.5">Best Value</div>
+          <div className="text-[9px] uppercase tracking-[0.14em] text-muted-foreground mt-2">
+            Starts at
           </div>
-          <div className="mt-1 font-serif text-2xl text-foreground">&#x20B9;{price}/day</div>
-          <div className="mt-1 text-xs text-muted-foreground">
-            Delivered every morning
+          <div className="mt-0.5 font-serif text-xl text-accent">&#x20B9;{Math.round(pricing.full.monthly / 30)}<span className="text-sm">/day</span></div>
+          <div className="mt-0.5 text-[10px] text-muted-foreground">
+            on our Monthly plan
           </div>
         </div>
       </div>
 
-      {/* Personalisation note */}
-      <div className="mt-5 rounded-[16px] bg-[var(--color-hero-panel)] p-5">
-        <p className="text-sm text-foreground">
-          <Icon name="microscope" size={16} className="inline-flex mr-1.5 text-accent" />
-          <strong>Why this recipe?</strong>{" "}
-          Based on {dogName}&rsquo;s {profile.breed || "breed"}, {profile.age} life stage,
-          {profile.weight ? ` ${profile.weight}kg weight,` : ""} and {profile.activity} activity level.
-          {profile.healthConditions.length > 0 && profile.healthConditions[0] !== "None"
-            ? ` Adjusted for: ${profile.healthConditions.join(", ")}.`
-            : ""}
+      {/* Unsure option */}
+      <div className="mt-3 rounded-[16px] border border-dashed border-[var(--color-border)] p-3 flex items-center justify-between bg-muted/5">
+        <div className="flex items-center gap-3">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-background border border-[var(--color-border)] shadow-sm">
+             <Icon name="shrug" size={14} className="text-muted-foreground" />
+          </div>
+          <div>
+            <div className="text-xs font-medium text-foreground">Unsure? Try one meal a day.</div>
+            <div className="text-[10px] text-muted-foreground">Perfect for toppers or transition.</div>
+          </div>
+        </div>
+        <div className="text-right">
+           <div className="text-xs font-bold text-foreground">&#x20B9;{Math.round(pricing.half.daily)}</div>
+           <div className="text-[9px] text-muted-foreground">per meal</div>
+        </div>
+      </div>
+
+      {/* Trial breakdown */}
+      <div className="mt-6 rounded-2xl border border-[var(--color-border)] bg-background p-5">
+         <h4 className="font-serif text-sm text-foreground mb-3">What&rsquo;s inside your trial?</h4>
+         <ul className="space-y-3">
+            <li className="flex items-start gap-3">
+               <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-green-50 text-green-600">
+                  <Icon name="check" size={10} />
+               </div>
+               <div className="text-xs">
+                  <span className="font-medium text-foreground">Perfectly portioned meals</span>
+                  <p className="text-muted-foreground text-[10px] mt-0.5">Calculated to {dailyCalories} kcal/day for {dogName}.</p>
+               </div>
+            </li>
+            <li className="flex items-start gap-3">
+               <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-green-50 text-green-600">
+                  <Icon name="check" size={10} />
+               </div>
+               <div className="text-xs">
+                  <span className="font-medium text-foreground">Transition guide & Wellness tracking</span>
+               </div>
+            </li>
+         </ul>
+      </div>
+
+      {/* Algorithm note */}
+      <div className="mt-4 rounded-[12px] bg-[var(--color-hero-panel)] p-4 border border-[var(--color-border)]">
+        <p className="text-[11px] leading-relaxed text-foreground italic">
+          <Icon name="microscope" size={12} className="inline-flex mr-1.5 text-accent" />
+          <strong>Algorithm Note:</strong>{" "}
+          Optimized for {dogName}&rsquo;s {profile.age} stage to manage {profile.activity === "high" ? "high energy output" : "ideal weight"}.
         </p>
       </div>
 
@@ -191,12 +233,12 @@ export function StepResults({ profile }: Props) {
         type="button"
         onClick={() =>
           setSelectedRecipe((r) =>
-            r.name === primary.name ? alternate : primary,
+            r.id === primary.id ? alternate : primary,
           )
         }
-        className="mt-4 text-center text-sm text-accent underline underline-offset-4 hover:text-accent/80"
+        className="mt-4 text-center text-xs font-medium text-accent hover:text-accent/80 transition-colors"
       >
-        {selectedRecipe.name === primary.name
+        {selectedRecipe.id === primary.id
           ? `Also works for ${dogName}: ${alternate.name}`
           : `Switch back to ${primary.name}`}
       </button>
@@ -204,14 +246,10 @@ export function StepResults({ profile }: Props) {
       {/* CTA */}
       <Link
         href="/checkout"
-        className="btn-pill-primary mt-8 w-full text-center"
+        className="btn-pill-primary mt-6 w-full text-center py-3.5 text-base"
       >
         Complete & Subscribe
       </Link>
-
-      <p className="mt-4 text-center text-xs text-muted-foreground">
-        Checkout coming soon · No commitment · Pause or cancel anytime
-      </p>
     </div>
   );
 }

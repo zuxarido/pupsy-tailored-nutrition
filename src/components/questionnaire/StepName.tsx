@@ -20,12 +20,7 @@ export function StepName({ profile, update, next }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-center">
-      {/* Illustration */}
-      <img
-        src="/quiz-dog-welcome.png"
-        alt="A happy puppy welcoming you"
-        className="quiz-illustration mb-2 h-40 w-40 object-contain md:h-52 md:w-52"
-      />
+
 
       <h2 className="headline-xl text-center text-[clamp(1.8rem,4vw,2.8rem)] text-foreground">
         What&rsquo;s your dog&rsquo;s name?

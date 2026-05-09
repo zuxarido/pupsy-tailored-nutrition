@@ -143,13 +143,14 @@ export default function DashboardPage() {
                           </div>
                         </div>
                       </div>
-                      {p.recommended_recipe && (
-                        <div className="mt-4 flex items-center gap-4 rounded-[12px] bg-[var(--color-hero-panel)] p-4">
+                      {/* Wellness Tracker & Recipe Info */}
+                      <div className="mt-4 flex flex-col gap-4">
+                        <div className="flex items-center gap-4 rounded-[12px] bg-[var(--color-hero-panel)] p-4">
                           <div>
                             <div className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
                               Recommended recipe
                             </div>
-                            <div className="text-sm font-medium text-foreground">{p.recommended_recipe}</div>
+                            <div className="text-sm font-medium text-foreground">{p.recommended_recipe || "Custom Plan"}</div>
                           </div>
                           {p.daily_grams && (
                             <div className="ml-auto text-right">
@@ -160,7 +161,12 @@ export default function DashboardPage() {
                             </div>
                           )}
                         </div>
-                      )}
+                        
+                        <Link href="/wellness" className="flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] bg-transparent px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-accent/5">
+                          <Icon name="heart" size={16} className="text-accent" />
+                          View Wellness Tracker
+                        </Link>
+                      </div>
                     </div>
                   ))}
                 </div>

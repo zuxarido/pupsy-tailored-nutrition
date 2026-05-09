@@ -1,6 +1,10 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Icon } from "@/components/ui/Icon";
+import { supabase } from "@/lib/supabase";
 
 const trustItems = [
   { icon: "vet", label: "Vet-Formulated" },
@@ -10,6 +14,23 @@ const trustItems = [
 ];
 
 export function Hero() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setIsLoggedIn(!!user);
+      setLoading(false);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+       if (event === "SIGNED_OUT") setIsLoggedIn(false);
+       if (event === "SIGNED_IN") setIsLoggedIn(true);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
   return (
     <section className="w-full">
       <div className="mx-auto grid max-w-[1320px] grid-cols-1 gap-10 px-6 pb-10 pt-6 md:grid-cols-2 md:gap-12 md:px-10 md:pb-24 md:pt-8">
@@ -29,10 +50,23 @@ export function Hero() {
 
           <div className="mt-9 flex flex-wrap items-center gap-6">
             <Link href="/get-started" className="btn-pill-primary">
-              Build your dog&rsquo;s plan
+              Get your free trial meal today
             </Link>
-            <Link href="/auth" className="link-ghost font-medium">
-              Log in
+
+            {!loading && (
+              isLoggedIn ? (
+                <Link href="/dashboard" className="link-ghost font-medium">
+                  Go to Dashboard
+                </Link>
+              ) : (
+                <Link href="/auth" className="link-ghost font-medium">
+                  Log in
+                </Link>
+              )
+            )}
+
+            <Link href="/wellness" className="text-sm font-medium text-accent hover:underline">
+              Wellness Tracker
             </Link>
           </div>
         </div>
@@ -45,7 +79,7 @@ export function Hero() {
             alt="A friendly illustrated dog mascot for Pupsy"
             width={896}
             height={1024}
-            className="absolute bottom-0 left-1/2 w-[80%] max-w-[440px] -translate-x-1/2 select-none"
+            className="absolute bottom-0 left-1/2 w-[80%] max-w-[440px] -translate-x-1/2 select-none mix-multiply"
             priority
           />
 

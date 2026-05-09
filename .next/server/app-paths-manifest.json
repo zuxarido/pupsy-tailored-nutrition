@@ -1,6 +1,0 @@
-{
-  "/api/razorpay/create-order/route": "app/api/razorpay/create-order/route.js",
-  "/page": "app/page.js",
-  "/get-started/page": "app/get-started/page.js",
-  "/checkout/page": "app/checkout/page.js"
-}

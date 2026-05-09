@@ -4,10 +4,10 @@ import { Icon } from "@/components/ui/Icon";
 import Link from "next/link";
 
 const steps = [
-  { num: "01", icon: "clipboard", title: "Take the quiz", body: "Answer a quick 2-minute questionnaire about your dog's breed, age, weight, activity level, and any health conditions." },
-  { num: "02", icon: "plan", title: "We design their plan", body: "Our vet-formulated algorithm creates a personalised feeding plan — the right recipe, the right portion, every single day." },
-  { num: "03", icon: "cook", title: "Cooked fresh every morning", body: "Each day, your dog's meals are cooked in our FSSAI-licensed kitchen using real, human-grade ingredients. No preservatives. No fillers." },
-  { num: "04", icon: "door", title: "Delivered to your door", body: "Two pre-portioned packs arrive every morning — one for breakfast, one goes in the fridge for dinner. Easy." },
+  { num: "01", icon: "clipboard", title: "Take the quiz", body: "Answer a quick 2-minute questionnaire about your dog's breed, age, weight, activity level, and any health conditions.", image: "/how-it-works-1.png" },
+  { num: "02", icon: "plan", title: "We design their plan", body: "Our vet-formulated algorithm creates a personalised feeding plan — the right recipe, the right portion, every single day.", image: "/how-it-works-2.png" },
+  { num: "03", icon: "cook", title: "Cooked fresh every morning", body: "Each day, your dog's meals are cooked in our kitchen using real, human-grade ingredients. No preservatives. No fillers.", image: "/how-it-works-3.png" },
+  { num: "04", icon: "door", title: "Delivered to your door", body: "Two pre-portioned packs arrive every morning — one for breakfast, one goes in the fridge for dinner. Easy.", image: "/how-it-works-4.png" },
 ];
 
 const faqs = [
@@ -32,22 +32,31 @@ export default function HowItWorksPage() {
               </p>
             </div>
 
-            <div className="mt-16 space-y-0">
+            <div className="mt-20 space-y-0">
               {steps.map((s, i) => (
-                <div key={s.num} className="relative mx-auto grid max-w-[800px] grid-cols-1 gap-6 md:grid-cols-[60px_1fr]">
-                  {/* Step marker */}
+                <div key={s.num} className="relative mx-auto grid max-w-[900px] grid-cols-1 gap-12 md:grid-cols-[200px_1fr] items-center py-10">
+                  {/* Step Art Marker */}
                   <div className="flex flex-col items-center">
-                    <div className="flex h-[60px] w-[60px] items-center justify-center rounded-full bg-accent/10">
-                      <Icon name={s.icon} size={26} className="text-accent" />
+                    <div className="relative flex h-48 w-48 items-center justify-center rounded-full border-2 border-accent/20 bg-accent/5 p-8 overflow-hidden transition-all duration-500 hover:bg-accent/10 hover:shadow-xl">
+                      <img src={s.image} alt={s.title} className="h-full w-full object-contain mix-multiply animate-in fade-in zoom-in duration-1000" />
+                      <div className="absolute -left-2 -top-2 flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-xs font-bold text-background shadow-lg">
+                        {s.num}
+                      </div>
                     </div>
                     {i < steps.length - 1 && (
-                      <div className="hidden h-full w-px bg-[var(--color-border)] md:block" />
+                      <div className="hidden h-32 w-px bg-gradient-to-b from-[var(--color-border)] to-transparent md:block mt-8" />
                     )}
                   </div>
-                  <div className="pb-12">
-                    <div className="text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">Step {s.num}</div>
-                    <h3 className="mt-2 font-serif text-2xl text-foreground">{s.title}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
+
+                  <div className="flex flex-col">
+                    <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">Step {s.num}</div>
+                    <h3 className="mt-3 font-serif text-[clamp(1.8rem,3vw,2.5rem)] leading-tight text-foreground">{s.title}</h3>
+                    <p className="mt-5 text-base leading-relaxed text-muted-foreground md:text-lg">{s.body}</p>
+                    
+                    <div className="mt-8 flex items-center gap-4">
+                      <div className="h-px flex-1 bg-[var(--color-border)]" />
+                      <Icon name={s.icon as any} size={20} className="text-accent/40" />
+                    </div>
                   </div>
                 </div>
               ))}

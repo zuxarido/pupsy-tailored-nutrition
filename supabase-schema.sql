@@ -81,3 +81,24 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 CREATE OR REPLACE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- Wellness Logs
+CREATE TABLE IF NOT EXISTS wellness_logs (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE,
+  dog_profile_id uuid REFERENCES dog_profiles(id) ON DELETE CASCADE,
+  log_date date DEFAULT CURRENT_DATE,
+  weight numeric,
+  calories integer,
+  energy text,
+  meal text,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now(),
+  UNIQUE(dog_profile_id, log_date)
+);
+
+ALTER TABLE wellness_logs ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can manage own wellness logs"
+  ON wellness_logs FOR ALL USING (auth.uid() = user_id);
+

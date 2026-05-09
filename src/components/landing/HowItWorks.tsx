@@ -8,22 +8,25 @@ type Step = {
   body: string;
 };
 
-const steps: Step[] = [
+const steps: (Step & { image: string })[] = [
   {
     num: "01",
     icon: "clipboard",
+    image: "/how-it-works-1.png",
     title: "Tell us about your dog",
     body: "Breed, age, weight, activity level — a 2-minute questionnaire so we know exactly what your dog needs.",
   },
   {
     num: "02",
     icon: "cook",
+    image: "/how-it-works-3.png",
     title: "We cook fresh every morning",
     body: "Our kitchen prepares your dog's meal each morning using vet-formulated recipes and real, whole ingredients.",
   },
   {
     num: "03",
     icon: "door",
+    image: "/how-it-works-4.png",
     title: "Delivered to your door",
     body: "Two pre-portioned packs arrive each morning — one for breakfast, one goes in the fridge for dinner.",
   },
@@ -50,27 +53,30 @@ export function HowItWorks() {
         </div>
 
         {/* 3-step strip */}
-        <div className="card-container mt-14 grid grid-cols-1 md:grid-cols-3">
+        <div className="mt-14 grid grid-cols-1 gap-8 md:grid-cols-3">
           {steps.map((s, i) => (
             <div
               key={s.num}
-              className={`flex flex-col p-7 md:p-9 ${
-                i > 0
-                  ? "border-t border-[var(--color-border)] md:border-t-0 md:border-l"
-                  : ""
-              }`}
+              className="group flex flex-col items-center text-center p-8 rounded-[32px] border border-[var(--color-border)] bg-background transition-all hover:shadow-2xl hover:-translate-y-2"
             >
-              <div className="flex items-center gap-3">
-                <Icon name={s.icon} size={24} className="text-accent" />
-                <span className="text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
-                  Step {s.num}
-                </span>
+              <div className="relative mb-8 flex h-44 w-44 items-center justify-center rounded-full border-2 border-accent/10 bg-accent/5 p-8 overflow-hidden">
+                <img 
+                  src={s.image} 
+                  alt={s.title} 
+                  className="h-full w-full object-contain mix-multiply transition-transform duration-700 group-hover:scale-110" 
+                />
+                <div className="absolute -right-2 -top-2 flex h-8 w-8 items-center justify-center rounded-full bg-foreground text-[10px] font-bold text-background shadow-md">
+                  {s.num}
+                </div>
               </div>
 
-              <h3 className="mt-6 font-serif text-xl text-foreground">
+              <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
+                Step {s.num}
+              </div>
+              <h3 className="mt-3 font-serif text-xl text-foreground">
                 {s.title}
               </h3>
-              <p className="mt-3 text-sm leading-[1.7] text-muted-foreground">
+              <p className="mt-4 text-sm leading-[1.7] text-muted-foreground">
                 {s.body}
               </p>
             </div>

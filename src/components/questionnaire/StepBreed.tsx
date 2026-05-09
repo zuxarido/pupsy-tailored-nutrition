@@ -34,11 +34,11 @@ export function StepBreed({ profile, update, next }: Props) {
   };
 
   return (
-    <div className="flex flex-col">
-      <h2 className="headline-xl text-[clamp(1.8rem,4vw,2.8rem)] text-foreground">
+    <div className="flex flex-col items-center text-center w-full">
+      <h2 className="headline-xl text-[clamp(1.6rem,3.5vw,2.4rem)] text-foreground">
         What breed is {profile.name || "your dog"}?
       </h2>
-      <p className="mt-3 text-sm text-muted-foreground">
+      <p className="mt-2 text-xs text-muted-foreground max-w-[340px]">
         This helps us calculate the right nutrition profile.
       </p>
 

@@ -1,0 +1,491 @@
+
+🐾 PUPSY
+Website Product Requirements Document
+Fresh. Personalised. Delivered Daily.
+Version 1.0   |   April 2026   |   CONFIDENTIAL
+
+
+
+1. Document Overview
+This document defines all website requirements for Pupsy -- a tech-enabled personalised fresh dog food subscription brand operating in India. It is intended for the design and development team and covers every page, user flow, feature, and screen state needed to build the first version of the Pupsy website. Operational, logistics, and kitchen processes are explicitly out of scope.
+
+Project
+Pupsy Website -- v1.0
+Scope
+Marketing site + subscription sign-up + customer account portal
+Out of Scope
+Mobile apps, kitchen ops software, delivery routing, internal admin panel
+Primary Audience
+Urban Indian dog owners, ages 24–45, smartphone-first
+
+
+2. Site Architecture & Page Map
+The website consists of three distinct zones: the public marketing site (unauthenticated), the subscription sign-up funnel (the Dog Profile Questionnaire), and the customer account portal (post-purchase).
+
+2.1  Public Marketing Site
+	•	Home Page  (/)
+	•	Our Food  (/our-food)
+	•	How It Works  (/how-it-works)
+	•	Our Recipes  (/recipes)
+	•	Why Fresh?  (/why-fresh)
+	•	Pricing  (/pricing)  -- optional, can be revealed at end of questionnaire
+	•	About Us  (/about)
+	•	Blog / Resources  (/blog)
+	•	FAQ  (/faq)
+	•	Contact  (/contact)
+
+2.2  Subscription Funnel  (Dog Profile Questionnaire)
+	•	Step 1 -- Dog's Name  (/get-started)
+	•	Step 2 -- Breed
+	•	Step 3 -- Age
+	•	Step 4 -- Sex & Neutered/Spayed
+	•	Step 5 -- Current Weight & Target Weight
+	•	Step 6 -- Body Condition Score (visual selector)
+	•	Step 7 -- Activity Level
+	•	Step 8 -- Health Conditions / Allergies
+	•	Step 9 -- Current Food Type
+	•	Step 10 -- Your Meal Recommendation  (results screen with recipe cards)
+	•	Step 11 -- Select Plan & Checkout
+	•	Step 12 -- Order Confirmation
+
+2.3  Customer Account Portal  (/account)
+	•	Dashboard -- upcoming delivery, dog profile summary
+	•	Manage Plan -- swap recipe, pause, resume, cancel
+	•	Delivery Schedule -- dates and status
+	•	Order History
+	•	Dog Profile -- edit info
+	•	Account Settings -- personal info, password, payment
+
+
+3. Page-by-Page Requirements
+3.1  Home Page  (/)
+The home page is the primary conversion page. Its job is to communicate the Pupsy proposition in under 10 seconds and funnel visitors into the questionnaire. Every section should build trust and urgency.
+
+Hero Section
+	•	Full-bleed visual: a happy dog eating from a Pupsy-branded meal pack, warm kitchen-morning feel
+	•	Headline (approx): "Real food. Cooked fresh. At your door every morning."
+	•	Sub-headline: "Personalised daily meals for your dog -- delivered like a dabbawala, every single day."
+	•	Primary CTA button: Build [Name]s Plan -- opens questionnaire
+	•	Secondary CTA: 'See How It Works' -> scrolls or links to /how-it-works
+	•	Trust bar below hero: 3–4 icons with short copy -- e.g., 'Vet-Formulated', 'Fresh Every Morning', 'No Preservatives', 'Portioned for Your Dog'
+
+The Problem Section
+	•	Short copy block explaining what's wrong with kibble, frozen food, and generic pet food
+	•	Simple 2–3 column comparison (kibble / frozen / Pupsy) -- NOT a table-heavy layout, more visual
+
+How Pupsy Works  (Summary)
+	•	3-step visual strip: Tell Us About Your Dog -> We Cook Fresh Every Morning -> Delivered to Your Door
+	•	Each step has an icon, a headline, and one line of copy
+	•	CTA: 'Get Started' -> questionnaire
+
+The Freshness Story
+	•	Photo-heavy section showing real ingredients: chicken, rice, vegetables
+	•	Short copy about no preservatives, human-grade ingredients, cooked daily in a FSSAI-licensed kitchen
+	•	Key differentiator callout: 'Unlike frozen food that has to be thawed -- yours is cooked this morning.'
+
+Recipe Tease Section
+	•	3–4 recipe cards in a horizontal scroll or grid
+	•	Each card: recipe name, hero ingredient image, 2-line description
+	•	No pricing on cards -- CTA links to /recipes or questionnaire
+
+Social Proof
+	•	3–5 customer reviews with dog name, owner name, city, star rating, quote
+	•	Optional: before/after energy/coat improvement anecdote
+	•	Trust logos: FSSAI, Vet Partner (if applicable), any media mentions
+
+Final CTA Strip
+	•	Strong colour background strip (brand orange)
+	•	Headline: 'Your dog deserves better. Start today.'
+	•	CTA button: 'Build [Dog Name]'s Plan'
+
+Footer
+	•	Logo, tagline
+	•	Navigation links
+	•	Social media icons (Instagram, Facebook)
+	•	Legal: Privacy Policy, Terms of Service, Refund Policy
+	•	Contact email / WhatsApp number
+
+
+3.2  How It Works  (/how-it-works)
+Explains the full customer journey and the daily delivery model. This is a critical trust-building page for first-time visitors who don't understand the concept.
+
+	•	Section 1: The Setup -- You answer questions about your dog -> we generate a personalised meal plan -> you subscribe
+	•	Section 2: Morning Cooking -- Every morning, Pupsy's kitchen cooks fresh batches based on the day's orders
+	•	Section 3: The Delivery -- Two packs delivered each morning: one for morning feeding, one goes into the fridge for evening feeding
+	•	Section 4: Feeding Time -- Owner opens the pack, no thawing, no measuring -- just serve
+	•	Include an illustrated or animated timeline graphic showing the full day loop
+	•	FAQ accordion at the bottom (see FAQ section requirements)
+
+💡 Note: This page should address the key concern: 'How is this different from frozen food?' The answer -- it's cooked today, not frozen, not retort-packaged -- needs to be explicit and repeated.
+
+3.3  Our Food  (/our-food)
+This is the product detail page. It needs to do what The Farmer's Dog does well -- convey quality, transparency, and trust -- but for Pupsy's fresh-cooked (not frozen) model.
+
+Ingredients Philosophy Block
+	•	Hero statement: 'Only ingredients you'd recognise'
+	•	Visual grid of raw ingredients: chicken breast, brown rice, spinach, carrots, turmeric, etc.
+	•	Short copy on sourcing: local, seasonal, no fillers, no by-products
+
+Recipe Cards  (3–4 recipes)
+Chicken & Rice
+Lamb & Veggies
+Egg & Lentil (Veg)
+Mutton & Sweet Potato
+Chicken, Brown Rice, Carrots, Spinach, Turmeric
+Lamb Mince, Oats, Peas, Pumpkin
+Eggs, Lentils, Carrots, Rice, Ghee
+Mutton, Sweet Potato, Beans, Ginger
+
+Each recipe card on the site should include:
+	•	Recipe name and hero image
+	•	Primary protein source highlighted
+	•	Full ingredient list
+	•	Key nutrition callouts (e.g., high protein, omega-3 rich, grain-free)
+	•	'Best for' tag: e.g., 'Active dogs', 'Senior dogs', 'Sensitive stomachs'
+	•	CTA: 'Add to My Plan' -> questionnaire or account
+
+Portion Science Block
+	•	Explain how portions are calculated: breed + age + weight + activity level
+	•	Visual showing a labelled Pupsy pack: dog name, date, meal number, portion size
+	•	No guesswork -- every pack has exactly the right amount for that dog
+
+Quality Standards Block
+	•	FSSAI-compliant kitchen callout
+	•	Vet nutritionist involvement (if applicable)
+	•	Freshness guarantee: cooked same morning, delivered within X hours
+
+
+3.4  Dog Profile Questionnaire  (/get-started)
+This is the most important feature on the website. It is the primary conversion mechanism. The questionnaire should feel warm, personalised, and quick. Each step should be a single screen -- no multi-question pages.
+
+General UX Rules for the Questionnaire
+	•	One question per screen -- full-page transitions between steps
+	•	Dog's name used throughout once entered: 'Great! Now tell us about [Name]'s breed'
+	•	Progress bar visible at the top across all steps
+	•	Back button always visible and functional
+	•	Answers saved to session state; if user refreshes, show a 'Continue where you left off?' prompt
+	•	Mobile-first layout -- large tap targets, thumb-friendly
+	•	No login/signup wall until after the recommendation is shown
+	•	Estimated time shown at the start: 'Takes 2 minutes'
+
+Questionnaire Steps -- Detailed
+
+Step
+Question
+Input Type
+Field Name
+Notes
+Step 1
+What's your dog's name?
+Text input
+Step 2
+What breed is [Name]?
+Searchable dropdown with top 30 Indian breeds pre-listed + 'Mixed / Other'
+Step 3
+How old is [Name]?
+Segmented selector: Puppy (0–12 mo) / Young Adult (1–3 yr) / Adult (3–7 yr) / Senior (7+ yr)
+Step 4
+Is [Name] male or female? And neutered/spayed?
+Two-step toggle: sex first, then yes/no for neutered
+Step 5
+How much does [Name] weigh?
+Numeric input (kg) + optional ideal weight target
+Step 6
+How does [Name]'s body look?
+5-option visual selector with illustrated dog silhouettes: Too Thin / Lean / Just Right / Chunky / Overweight
+Step 7
+How active is [Name]?
+3-option card selector: Low (short walks) / Moderate (1–2 hrs/day) / High (runs, sports)
+Step 8
+Any health conditions or allergies?
+Multi-select checklist: None / Sensitive stomach / Skin issues / Joint problems / Diabetes / Chicken allergy / Other
+Step 9
+What are you feeding [Name] now?
+Single select: Kibble / Wet food / Home-cooked / Raw / Mix / Nothing consistent
+Step 10
+Your [Name]'s plan is ready!
+Results screen -- recipe recommendation + plan details + CTA to subscribe
+
+Step 10 -- The Results Screen
+This is the payoff moment. Design it to feel like a reveal.
+	•	Animated transition into results: 'We've built [Name]'s plan!'
+	•	Recommended recipe card (1 primary, 1 alternate shown as 'also works for [Name]')
+	•	Daily portion size shown clearly: e.g., '280g per day -- 2 packs of 140g'
+	•	Price shown for the first time: e.g., '₹149/day -- delivered every morning'
+	•	Breakdown of why this recipe was chosen based on the dog's answers
+	•	CTA: 'Start [Name]'s Plan' -> leads to checkout / account creation
+	•	Secondary: 'Change Recipe' toggle -- shows alternate options
+💡 Note: Even though Pupsy has 3–4 fixed recipes, the results screen must feel personalised. Use the dog's name, their specific weight, and a 1-sentence personalisation note to make it feel custom.
+
+
+3.5  Checkout  (/checkout)
+Triggered after the user clicks 'Start [Name]'s Plan' on the results screen. For v1.0, this can be a simple form + Razorpay/Cashfree payment integration. Keep it 2 steps maximum.
+
+Step 1 -- Account Creation + Delivery Details
+	•	Name, email, phone number (OTP verification)
+	•	Delivery address with PIN code check (show error if outside delivery zone)
+	•	Preferred delivery time slot if applicable
+	•	Order summary sidebar: recipe, dog name, daily price, subscription cadence
+
+Step 2 -- Payment
+	•	Razorpay or Cashfree integration (standard for India)
+	•	UPI, net banking, card, and wallet options
+	•	Auto-renewal consent checkbox with clear language
+	•	First delivery date shown explicitly: 'Your first delivery: Tomorrow morning'
+	•	Discount code field (optional for v1)
+
+Order Confirmation Screen
+	•	Big friendly confirmation: 'Woof! [Name]'s meals are confirmed! 🎉'
+	•	Summary: recipe, first delivery date, daily portion, price
+	•	What to expect next: 'We'll cook [Name]'s meal tomorrow morning and deliver it by [time]'
+	•	Email confirmation auto-sent
+	•	CTA: 'Go to My Account'
+
+3.6  Customer Account Portal  (/account)
+Post-login area for existing subscribers to manage their plan and view delivery info.
+
+Dashboard
+	•	Greeting: 'Good morning! [Name]'s meal is being cooked right now 🍲'
+	•	Next delivery card: date, time, recipe
+	•	Quick links: Manage Plan, Track Delivery, Edit Dog Profile
+
+Manage Plan
+	•	Current recipe with 'Swap Recipe' button -- shows other 2–3 options
+	•	Pause subscription: choose pause duration (1 week / 2 weeks / custom date)
+	•	Resume subscription
+	•	Cancel subscription -- with a retention flow asking reason, offering a discount or pause first
+	•	Change delivery address
+
+Delivery Schedule
+	•	Calendar or list view of upcoming deliveries
+	•	Status labels: Scheduled / Being Prepared / Out for Delivery / Delivered
+	•	Skip a day functionality: tap any upcoming date to skip it
+
+Order History
+	•	List of past deliveries: date, recipe, status, invoice link
+
+Dog Profile
+	•	Edit any field from the original questionnaire
+	•	Re-run questionnaire to update meal recommendation if dog's profile changes significantly
+
+Account Settings
+	•	Update personal info: name, email, phone
+	•	Change password
+	•	Update saved payment method
+	•	Notification preferences: WhatsApp / email / SMS for delivery updates
+
+
+3.7  Supporting Content Pages
+
+Why Fresh?  (/why-fresh)
+	•	Educational page comparing fresh-cooked vs kibble vs frozen vs retort (canned) food
+	•	Use simple visual infographics -- ingredient quality, nutrient retention, digestibility
+	•	Pupsy's position stated clearly: daily-cooked, never frozen, no preservatives
+	•	CTA to questionnaire at bottom
+
+FAQ  (/faq)
+	•	Accordion-style -- grouped into: Delivery, Food & Ingredients, Subscription, Pricing, Health
+	•	Pre-populated with at minimum 20 questions at launch
+	•	Search bar to filter questions
+Key FAQs to include:
+	•	Is the food really cooked the same morning it's delivered?
+	•	What if I'm not home for delivery?
+	•	How long can the fridge pack be stored?
+	•	Can I pause my subscription if I travel?
+	•	What if my dog doesn't like the food?
+	•	Is this safe for puppies / senior dogs?
+	•	Can I order for multiple dogs?
+
+About Us  (/about)
+	•	Founder story -- the 'why' behind Pupsy
+	•	Mission statement
+	•	Team section (optional for v1)
+	•	Kitchen photo or video -- builds trust around food safety and freshness
+
+Blog  (/blog)
+	•	Category-tagged articles: Nutrition / Training / Health / Stories
+	•	Article detail page with related posts
+	•	Email subscription capture for blog updates
+	•	v1 can launch with 5–10 articles
+
+Contact  (/contact)
+	•	Contact form: name, email, message, order number (optional)
+	•	WhatsApp chat button (floating across all pages)
+	•	Response time expectation set: 'We reply within 4 business hours'
+
+
+4. Functional Requirements Summary
+
+Feature
+Description
+Priority
+Dog Profile Questionnaire
+Multi-step onboarding flow, single question per screen, mobile-first
+Must Have
+Recipe Recommendation Engine
+Rule-based logic mapping dog profile to 1 of 3–4 recipes. No ML needed in v1.
+Must Have
+Subscription Checkout
+Account creation + address + payment via Razorpay/Cashfree
+Must Have
+OTP Login / Signup
+Phone number OTP-based authentication (no passwords)
+Must Have
+Customer Account Portal
+Plan management, delivery schedule, dog profile editing
+Must Have
+Delivery Area Check
+PIN code validation at checkout -- error if outside zone
+Must Have
+Pause / Skip Delivery
+Subscriber can pause or skip a specific day from their account
+Must Have
+Recipe Swap
+Subscriber can change recipe from account without restarting questionnaire
+Must Have
+Email Transactional Flows
+Order confirmation, delivery day reminder, payment receipt
+Must Have
+WhatsApp Chat Widget
+Floating button linking to WhatsApp business number
+Must Have
+Mobile-First Responsive Design
+Site must be fully usable on a 375px mobile screen
+Must Have
+Cancellation Retention Flow
+When subscriber tries to cancel, show pause option + discount offer first
+Should Have
+Multiple Dog Profiles
+One account can have more than one dog with separate meal plans
+Should Have
+Referral Code at Checkout
+Enter a friend's referral code for a discount
+Should Have
+Blog CMS
+Simple headless CMS (e.g., Sanity or Contentful) for blog and FAQ
+Should Have
+Discount Code Field
+Apply promo codes at checkout
+Should Have
+Delivery Status Tracking
+Live status labels in account: Scheduled / Being Prepared / Out for Delivery / Delivered
+Should Have
+Dog Photo Upload
+Optional profile photo for the dog -- shown in account dashboard
+Nice to Have
+Breed Auto-detection
+Upload a dog photo and auto-detect breed using image recognition
+Nice to Have
+Push / WhatsApp Notifications
+Delivery updates sent via WhatsApp or browser push
+Nice to Have
+
+
+5. Non-Functional Requirements
+
+5.1  Performance
+	•	Page load time under 3 seconds on a 4G mobile connection
+	•	Time to interactive (TTI) under 4 seconds
+	•	Core Web Vitals (LCP, CLS, FID) must be in 'Good' range for Google Search ranking
+
+5.2  SEO
+	•	All public pages must have unique, editable meta titles and descriptions
+	•	Structured data markup (Schema.org) on recipe pages and FAQ page
+	•	Sitemap.xml auto-generated and submitted to Google Search Console
+	•	Blog articles must be fully crawlable and indexable
+
+5.3  Security
+	•	HTTPS across all pages (SSL mandatory)
+	•	OTP-based authentication -- no plain text password storage
+	•	PCI-DSS compliance handled by payment gateway (Razorpay / Cashfree) -- no card data stored on Pupsy servers
+	•	GDPR/DPDP Act-compliant data handling and cookie consent banner
+
+5.4  Accessibility
+	•	Minimum WCAG 2.1 AA compliance
+	•	All images must have descriptive alt text
+	•	Keyboard-navigable forms in the questionnaire
+	•	Sufficient colour contrast for all text and CTA elements
+
+5.5  Analytics & Tracking
+	•	Google Analytics 4 installed on all pages
+	•	Conversion events tracked: Questionnaire Started, Questionnaire Completed, Plan Selected, Purchase Completed
+	•	Funnel drop-off tracking per questionnaire step
+	•	Meta Pixel installed for Facebook/Instagram ad retargeting
+
+
+6. Design Guidelines
+
+The visual language should feel warm, fresh, and trustworthy -- not clinical. Think: Sunday morning farmers market, not sterile pet pharmacy.
+
+6.1  Tone
+	•	Warm, conversational, dog-parent-first
+	•	Copy always talks to the owner as someone who loves their dog, not as a consumer
+	•	Avoid overly technical nutrition language in the UI -- save it for the blog
+	•	Playful but not childish -- this is a premium product
+
+6.2  Visual Direction
+	•	Photography: real dogs, real food, natural light, Indian homes. Avoid stock-photo corporate imagery.
+	•	Colour palette: warm whites, muted orange, earthy greens, cream backgrounds
+	•	Typography: clean sans-serif (e.g., Plus Jakarta Sans, Inter, or similar)
+	•	Illustrations: optional hand-drawn-style icons to add warmth
+	•	Icons: consistent icon set throughout -- do not mix styles
+
+6.3  Key UI Components
+	•	Floating CTA button on mobile (always visible 'Build My Dog's Plan')
+	•	Sticky header on desktop with logo and primary CTA
+	•	WhatsApp chat bubble -- always visible, bottom right
+	•	Recipe cards -- consistent card component used across /our-food, /recipes, and questionnaire results
+	•	Progress stepper -- used in questionnaire and checkout
+
+
+7. Suggested Tech Stack  (For Developer Reference)
+
+Layer
+Recommendation
+Notes
+Frontend
+Next.js (React)
+SEO-friendly SSR, fast performance
+Backend
+Node.js / Express or Next.js API routes
+Simple REST API for v1
+Database
+PostgreSQL (via Supabase or Railway)
+Stores dog profiles, subscriptions, orders
+Authentication
+MSG91 / Twilio for OTP via SMS
+Phone-first, no passwords
+Payments
+Razorpay Subscriptions
+Handles recurring billing natively
+Email
+Postmark or SendGrid
+Transactional emails (order, delivery, receipts)
+CMS (Blog/FAQ)
+Sanity.io or Contentful
+Non-developer team can update content
+Hosting
+Vercel (frontend) + Railway or Render (backend)
+Low ops overhead for early stage
+
+
+8. V1 Launch Checklist
+The following must all be true before the website goes live to first customers:
+
+	•	Questionnaire fully functional -- all 10 steps, session persistence, mobile-tested
+	•	Recipe recommendation logic implemented and verified against all input combinations
+	•	Checkout with Razorpay live (not test mode)
+	•	Order confirmation email working
+	•	Account portal: plan management + delivery schedule working
+	•	PIN code delivery area validation live
+	•	All marketing pages live: Home, Our Food, How It Works, Recipes, FAQ, About
+	•	Privacy Policy, Terms of Service, and Refund Policy pages published
+	•	Google Analytics 4 + Meta Pixel installed and conversion events verified
+	•	WhatsApp chat button live with active Pupsy business number
+	•	SSL certificate active, site loads on HTTPS
+	•	Mobile responsiveness tested on iPhone SE, iPhone 14, Android mid-range
+	•	End-to-end user journey tested by at least 3 real dog owners (non-team)
+
+
+-- End of Document --
+🐾  Pupsy  |  Fresh. Personalised. Daily.

@@ -24,12 +24,7 @@ export function StepCurrentFood({ profile, update, next }: Props) {
 
   return (
     <div className="flex flex-col items-center">
-      {/* Illustration */}
-      <img
-        src="/quiz-dog-food.png"
-        alt="A dog enjoying a fresh meal"
-        className="quiz-illustration mb-4 h-36 w-36 object-contain md:h-48 md:w-48"
-      />
+
 
       <h2 className="headline-xl text-center text-[clamp(1.8rem,4vw,2.8rem)] text-foreground">
         What are you feeding {profile.name || "your dog"} now?

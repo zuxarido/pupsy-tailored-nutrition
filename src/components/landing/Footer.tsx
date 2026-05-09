@@ -6,6 +6,7 @@ const navGroups = [
     links: [
       { label: "How It Works", href: "/how-it-works" },
       { label: "Our Food", href: "/our-food" },
+      { label: "Wellness Tracker", href: "/wellness" },
       { label: "FAQ", href: "/faq" },
     ],
   },
@@ -35,12 +36,17 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-5">
           {/* Brand column */}
           <div className="md:col-span-2">
-            <Link href="/" className="font-serif text-2xl tracking-tight text-foreground">
-              Pupsy<span className="text-accent">.</span>
+            <Link href="/" className="flex items-center">
+              <img src="/logo.png" alt="Pupsy Logo" className="h-8 md:h-10 w-auto" />
             </Link>
             <p className="mt-4 max-w-[280px] text-sm leading-relaxed text-muted-foreground">
               Fresh, personalised meals for your dog. Cooked daily. Delivered to your door across India.
             </p>
+            <div className="mt-6 space-y-1 text-sm text-muted-foreground">
+              <p><a href="mailto:apoorv@pupsy.in" className="hover:text-foreground">apoorv@pupsy.in</a> · <a href="mailto:jaskaran@pupsy.in" className="hover:text-foreground">jaskaran@pupsy.in</a></p>
+              <p>+91 9811808217 · +91 88007 47439</p>
+              <p>A10/12 Jhilmil Industrial Area, New Delhi</p>
+            </div>
 
             {/* Social icons */}
             <div className="mt-6 flex gap-4">
@@ -102,7 +108,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-[var(--color-border)] pt-6 text-xs text-muted-foreground md:flex-row md:items-center">
           <div>© {new Date().getFullYear()} Pupsy. All rights reserved.</div>
-          <div>Made with 🧡 in Bengaluru · Mumbai · Delhi</div>
+          <div>Made with 🧡 in New Delhi</div>
         </div>
       </div>
     </footer>

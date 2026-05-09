@@ -43,11 +43,11 @@ export function StepHealth({ profile, update, next }: Props) {
   };
 
   return (
-    <div className="flex flex-col">
-      <h2 className="headline-xl text-[clamp(1.8rem,4vw,2.8rem)] text-foreground">
+    <div className="flex flex-col items-center text-center">
+      <h2 className="headline-xl text-[clamp(1.6rem,3.5vw,2.4rem)] text-foreground">
         Any health conditions or allergies?
       </h2>
-      <p className="mt-3 text-sm text-muted-foreground">
+      <p className="mt-2 text-xs text-muted-foreground max-w-[340px]">
         Select all that apply. We&rsquo;ll tailor {profile.name || "your dog"}&rsquo;s recipe accordingly.
       </p>
 

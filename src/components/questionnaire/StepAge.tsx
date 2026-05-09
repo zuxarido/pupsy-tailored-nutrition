@@ -21,29 +21,35 @@ export function StepAge({ profile, update, next }: Props) {
   };
 
   return (
-    <div className="flex flex-col">
-      <h2 className="headline-xl text-[clamp(1.8rem,4vw,2.8rem)] text-foreground">
+    <div className="flex flex-col items-center text-center">
+      <h2 className="headline-xl text-[clamp(1.6rem,3.5vw,2.4rem)] text-foreground">
         How old is {profile.name || "your dog"}?
       </h2>
-      <p className="mt-3 text-sm text-muted-foreground">
-        Nutritional needs change at every life stage.
+      <p className="mt-2 text-xs text-muted-foreground max-w-[340px]">
+        Caloric needs change as dogs age.
       </p>
 
-      <div className="stagger-children mt-8 grid grid-cols-2 gap-3">
+      <div className="stagger-children mt-6 flex flex-col gap-3 w-full max-w-[320px]">
         {ageOptions.map((opt) => (
           <button
             key={opt.value}
             type="button"
             onClick={() => select(opt.value)}
-            className={`quiz-option fade-in flex flex-col items-center gap-2.5 rounded-[16px] border p-6 ${
+            className={`quiz-option group fade-in flex items-center gap-5 rounded-[20px] border p-4 transition-all hover:shadow-lg ${
               profile.age === opt.value
-                ? "border-accent bg-accent/5 shadow-md"
-                : "border-[var(--color-border)] bg-background"
+                ? "border-accent bg-accent/5 ring-1 ring-accent shadow-md"
+                : "border-[var(--color-border)] bg-background hover:border-accent/40"
             }`}
           >
-            <Icon name={opt.icon} size={32} className="text-accent" />
-            <span className="text-sm font-medium text-foreground">{opt.label}</span>
-            <span className="text-xs text-muted-foreground">{opt.detail}</span>
+            <div className={`flex h-12 w-12 items-center justify-center rounded-full transition-colors ${
+              profile.age === opt.value ? "bg-accent text-white" : "bg-muted/50 text-accent group-hover:bg-accent/10"
+            }`}>
+              <Icon name={opt.icon} size={24} />
+            </div>
+            <div className="flex flex-col items-start text-left">
+              <span className="text-base font-serif text-foreground leading-tight">{opt.label}</span>
+              <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">{opt.detail}</span>
+            </div>
           </button>
         ))}
       </div>

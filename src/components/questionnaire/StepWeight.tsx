@@ -19,11 +19,11 @@ export function StepWeight({ profile, update, next }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col">
-      <h2 className="headline-xl text-[clamp(1.8rem,4vw,2.8rem)] text-foreground">
+    <form onSubmit={handleSubmit} className="flex flex-col items-center text-center w-full">
+      <h2 className="headline-xl text-[clamp(1.6rem,3.5vw,2.4rem)] text-foreground">
         How much does {profile.name || "your dog"} weigh?
       </h2>
-      <p className="mt-3 text-sm text-muted-foreground">
+      <p className="mt-2 text-xs text-muted-foreground max-w-[340px]">
         We&rsquo;ll use this to calculate exact daily portions.
       </p>
 

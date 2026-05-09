@@ -7,10 +7,10 @@ import { Nav } from "@/components/landing/Nav";
 import { Footer } from "@/components/landing/Footer";
 import { Icon } from "@/components/ui/Icon";
 import { PlanSelector } from "@/components/checkout/PlanSelector";
-import { RazorpayButton } from "@/components/checkout/RazorpayButton";
 import type { DogProfile } from "@/types/dog-profile";
 import type { User } from "@supabase/supabase-js";
-
+import { getPricing } from "@/lib/pricing";
+// Trigger rebuild
 export default function CheckoutPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -18,8 +18,9 @@ export default function CheckoutPage() {
   const [user, setUser] = useState<User | null>(null);
   
   // Pricing/plan state
-  const [dailyPrice, setDailyPrice] = useState(150); // fallback
+  const [dailyGrams, setDailyGrams] = useState(500); // fallback
   const [selectedPlan, setSelectedPlan] = useState<string>("monthly");
+  const [planType, setPlanType] = useState<"full" | "half">("full");
   
   // Auth state for inline login (Email or Phone)
   const [identifier, setIdentifier] = useState("");
@@ -39,11 +40,15 @@ export default function CheckoutPage() {
           const parsed = JSON.parse(raw);
           setProfile(parsed);
           
-          // Calculate arbitrary price based on weight
           const w = parseFloat(parsed.weight) || 15;
-          const portion = Math.round((30 * w + 70) / 1.5);
-          const rawPrice = Math.round(portion * 0.55);
-          setDailyPrice(Math.max(99, Math.min(299, rawPrice)));
+          const baseGoal = w * 20;
+          let multiplier = 1.0;
+          if (parsed.activity === "high") multiplier = 1.2;
+          else if (parsed.activity === "low") multiplier = 0.8;
+          
+          // Use dailyGrams from profile if available, else calculate rough estimate
+          const grams = parsed.dailyGrams || Math.round((baseGoal * multiplier) / 130 * 100); 
+          setDailyGrams(Math.min(800, grams));
         } catch (e) {}
       }
 
@@ -134,13 +139,17 @@ export default function CheckoutPage() {
     }
   };
 
-  const handlePaymentSuccess = async (paymentData: any) => {
+  const handleOrderViaWhatsApp = async () => {
     try {
       setLoading(true);
+      
       // 1. Save dog profile to Supabase if missing
-      let dogProfileId = null;
       if (user && profile) {
-        const { data: profileInsert, error: profileErr } = await supabase
+        let dailyPrice = pricing.daily;
+        if (selectedPlan === "weekly") dailyPrice = pricing.weekly / 7;
+        else if (selectedPlan === "monthly") dailyPrice = pricing.monthly / 30;
+
+        const { error: profileErr } = await supabase
           .from("dog_profiles")
           .insert({
             user_id: user.id,
@@ -153,36 +162,27 @@ export default function CheckoutPage() {
             health_conditions: profile.healthConditions || [],
             current_food: profile.currentFood,
             daily_price: dailyPrice,
+            recommended_recipe: profile.recommendedRecipe || "Chicken & Rice",
+            daily_grams: dailyGrams,
           })
           .select("id")
           .single();
-          
-        if (!profileErr && profileInsert) {
-          dogProfileId = profileInsert.id;
-        }
       }
 
-      // 2. Verify payment on server
-      await fetch("/api/razorpay/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...paymentData,
-          userId: user?.id,
-          dogProfileId,
-          planType: selectedPlan,
-          amount: dailyPrice * (selectedPlan === "monthly" ? 30 : selectedPlan === "quarterly" ? 90 : 7),
-        }),
-      });
-
-      // Clear local storage and redirect to dashboard
+      // Clear local storage
       localStorage.removeItem("pupsy_dog_profile");
       localStorage.removeItem("pupsy_step");
-      router.push("/dashboard");
+      
+      // Redirect to WhatsApp
+      const recipe = profile?.recommendedRecipe || "Chicken & Rice";
+      const waMessage = `Hi! I would like to place an order for my dog ${profile?.name || "dog"}.\n\nRecipe: ${recipe}\nDaily Portion: ${dailyGrams}g\nPlan Selected: ${selectedPlan}\nPrice: ₹${totalAmount.toLocaleString("en-IN")}`;
+      const waUrl = `https://wa.me/919811808217?text=${encodeURIComponent(waMessage)}`;
+      
+      window.location.href = waUrl;
     } catch (err) {
       console.error(err);
       setLoading(false);
-      alert("Payment verified, but failed to save profile. Please contact support.");
+      alert("Failed to save profile. Please try again or contact support.");
     }
   };
 
@@ -211,11 +211,12 @@ export default function CheckoutPage() {
   }
 
   // Calculate final amount based on selection
-  let days = 30;
-  let multiplier = 0.9;
-  if (selectedPlan === "weekly") { days = 7; multiplier = 1; }
-  if (selectedPlan === "quarterly") { days = 90; multiplier = 0.8; }
-  const totalAmount = Math.round(dailyPrice * multiplier) * days;
+  const pricingData = getPricing(dailyGrams);
+  const pricing = planType === "full" ? pricingData.full : pricingData.half;
+  
+  let totalAmount = pricing.monthly;
+  if (selectedPlan === "weekly") totalAmount = pricing.weekly;
+  else if (selectedPlan === "daily") totalAmount = pricing.daily;
 
   return (
     <>
@@ -337,9 +338,11 @@ export default function CheckoutPage() {
                 </div>
                 
                 <PlanSelector 
-                  dailyPrice={dailyPrice} 
+                  dailyGrams={dailyGrams} 
                   selectedPlan={selectedPlan} 
-                  onSelect={setSelectedPlan} 
+                  onSelect={setSelectedPlan}
+                  planType={planType}
+                  onTypeChange={setPlanType}
                 />
               </div>
 
@@ -373,21 +376,41 @@ export default function CheckoutPage() {
 
                 {user && (
                   <div className="mt-6">
-                    <RazorpayButton 
-                      amount={totalAmount} 
-                      planType={selectedPlan} 
-                      dogName={profile?.name || "dog"} 
-                      userEmail={user.email || undefined} 
-                      onSuccess={handlePaymentSuccess} 
-                      onFailure={(err) => alert(err)} 
-                    />
+                    <button
+                      onClick={handleOrderViaWhatsApp}
+                      className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 py-4 text-base font-semibold text-white shadow-sm transition-opacity hover:opacity-90"
+                    >
+                      <Icon name="message" size={20} />
+                      Get your trial meal free
+                    </button>
                   </div>
                 )}
                 
-                <p className="mt-4 flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
+                <div className="mt-8 grid grid-cols-2 gap-4 border-t border-[var(--color-border)] pt-6">
+                  <div className="flex flex-col items-center text-center gap-1.5">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-50 text-green-600">
+                      <Icon name="check" size={16} />
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-foreground">100% Fresh</span>
+                  </div>
+                  <div className="flex flex-col items-center text-center gap-1.5">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+                      <Icon name="vet" size={16} />
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-foreground">Vet Approved</span>
+                  </div>
+                </div>
+
+                <p className="mt-6 flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
                   <Icon name="lock" size={12} />
-                  Secure payment via Razorpay
+                  Your information is saved securely
                 </p>
+
+                <div className="mt-6 rounded-xl bg-accent/5 p-4 border border-accent/10">
+                  <p className="text-[11px] leading-relaxed text-accent font-medium text-center italic">
+                    "100% money-back guarantee if they don't lick the bowl clean."
+                  </p>
+                </div>
               </div>
             </div>
           </div>

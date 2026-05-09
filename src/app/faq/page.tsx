@@ -24,7 +24,7 @@ const faqs = [
   { q: "What if my dog doesn't like it?", a: "We offer a taste-test guarantee. If your dog doesn't love it, we'll work with you or issue a full refund.", cat: "Pricing" },
   { q: "How is the food packaged?", a: "Each meal comes in a sealed, BPA-free container inside an insulated bag to maintain freshness.", cat: "Delivery" },
   { q: "Can I feed Pupsy alongside kibble?", a: "Yes — many parents transition gradually. You can mix Pupsy with your dog's current food during the transition.", cat: "Health" },
-  { q: "Is the kitchen facility certified?", a: "Yes. Our kitchen is FSSAI-licensed and follows strict food safety protocols.", cat: "Product" },
+  { q: "Is the kitchen facility certified?", a: "Yes. Our kitchen is a state-of-the-art commercial facility that follows strict food safety protocols.", cat: "Product" },
   { q: "Do you offer treats or supplements?", a: "Not yet — but we're working on it. For now, we're focused on perfecting daily meals.", cat: "Product" },
   { q: "How do I contact support?", a: "You can reach us at hello@pupsy.in or through the contact page. We respond within 24 hours.", cat: "Pricing" },
 ];
