@@ -38,7 +38,7 @@ export function Footer() {
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center">
               <img
-                src="/logov1-removebg-preview.png"
+                src="/logo.png"
                 alt="Pupsy Logo"
                 className="h-10 md:h-12 w-auto"
               />
