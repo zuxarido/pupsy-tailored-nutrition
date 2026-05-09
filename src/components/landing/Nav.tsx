@@ -128,7 +128,7 @@ export function Nav() {
       <div className="mx-auto flex max-w-[1320px] items-center justify-between px-6 py-5 md:px-10">
         {/* Logo */}
         <Link href="/" className="flex items-center">
-          <img src="/logo.png" alt="Pupsy Logo" className="h-8 md:h-10 w-auto" />
+          <img src="/logov1.png" alt="Pupsy Logo" className="h-8 md:h-10 w-auto" />
         </Link>
 
         {/* Desktop links */}
