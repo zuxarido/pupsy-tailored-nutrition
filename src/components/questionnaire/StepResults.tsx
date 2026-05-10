@@ -5,50 +5,8 @@ import Link from "next/link";
 import type { DogProfile } from "@/types/dog-profile";
 import { Icon } from "@/components/ui/Icon";
 import { getPricing } from "@/lib/pricing";
-
-type Recipe = {
-  id: string;
-  name: string;
-  icon: any;
-  protein: string;
-  ingredients: string;
-  tags: string[];
-  bestFor: string;
-  caloriesPer100g: number;
-};
-
-const PUPSY_RECIPES: Recipe[] = [
-  {
-    id: "veg",
-    name: "Paneer & Rice",
-    icon: "paw",
-    protein: "Paneer & Moong Dal",
-    ingredients: "Paneer, Moong Dal, White Rice, Pumpkin, Fresh Veggies",
-    tags: ["Vegetarian", "Gentle stomach"],
-    bestFor: "Sensitive stomachs",
-    caloriesPer100g: 130
-  },
-  {
-    id: "senior",
-    name: "Chicken & Quinoa",
-    icon: "chicken",
-    protein: "Chicken & Quinoa",
-    ingredients: "Chicken, Quinoa, Carrots, Green Beans, Bone Broth",
-    tags: ["High protein", "Senior dogs"],
-    bestFor: "Senior or overweight dogs",
-    caloriesPer100g: 88
-  },
-  {
-    id: "chicken_rice",
-    name: "Chicken & Rice",
-    icon: "chicken",
-    protein: "Chicken & Liver",
-    ingredients: "Chicken Breast, Chicken Liver, White Rice, Farm Eggs, Carrots, Ghee",
-    tags: ["All life stages", "Energy boost"],
-    bestFor: "Active dogs",
-    caloriesPer100g: 149
-  }
-];
+import { PUPSY_RECIPES, type Recipe } from "@/lib/recipes";
+import { calculateDailyCalories, calculateDailyPortion } from "@/lib/nutrition";
 
 function getRecommendation(profile: DogProfile): { primary: Recipe; alternate: Recipe } {
   const isSenior = profile.age === "senior";
@@ -72,24 +30,6 @@ function getRecommendation(profile: DogProfile): { primary: Recipe; alternate: R
   return { primary, alternate };
 }
 
-function calculateDailyCalories(profile: DogProfile): number {
-  const w = parseFloat(profile.weight) || 15;
-  const baseGoal = w * 20;
-  let multiplier = 1.0;
-  
-  if (profile.activity === "high") multiplier = 1.2;
-  else if (profile.activity === "low") multiplier = 0.8;
-  
-  return Math.round(baseGoal * multiplier);
-}
-
-function calculatePortion(calories: number, caloriesPer100g: number): number {
-  const rawGrams = (calories / caloriesPer100g) * 100;
-  // Round to nearest 50g
-  const roundedGrams = Math.round(rawGrams / 50) * 50;
-  return Math.min(800, roundedGrams); // Cap at 800g as requested
-}
-
 type Props = {
   profile: DogProfile;
   update: (patch: Partial<DogProfile>) => void;
@@ -99,15 +39,16 @@ export function StepResults({ profile, update }: Props) {
   const { primary, alternate } = getRecommendation(profile);
   const [selectedRecipe, setSelectedRecipe] = useState(primary);
 
-  const dailyCalories = calculateDailyCalories(profile);
-  const dailyPortion = calculatePortion(dailyCalories, selectedRecipe.caloriesPer100g);
+  const weightKg = parseFloat(profile.weight) || 15;
+  const dailyCalories = calculateDailyCalories(weightKg, profile.activity);
+  const dailyPortion = calculateDailyPortion(dailyCalories, selectedRecipe.caloriesPer100g);
   const pricing = getPricing(dailyPortion);
 
   // Sync recommendation to parent state on mount or recipe change
   useEffect(() => {
     update({
       recommendedRecipe: selectedRecipe.name,
-      dailyGrams: dailyPortion
+      dailyGrams: dailyPortion,
     });
   }, [selectedRecipe.name, dailyPortion]);
 
@@ -130,7 +71,7 @@ export function StepResults({ profile, update }: Props) {
       {/* Primary recommendation card */}
       <div className="mt-6 rounded-[20px] border border-accent/30 bg-accent/5 p-5 shadow-sm">
         <div className="flex items-center gap-3">
-          <Icon name={selectedRecipe.icon as any} size={28} className="text-accent" />
+          <Icon name={selectedRecipe.icon as never} size={28} className="text-accent" />
           <div>
             <div className="text-[9px] uppercase tracking-[0.14em] text-muted-foreground">
               Recommended recipe
@@ -167,14 +108,17 @@ export function StepResults({ profile, update }: Props) {
           </div>
         </div>
         <div className="rounded-[16px] border border-accent/40 bg-accent/5 p-4 text-center shadow-sm flex flex-col justify-center relative overflow-hidden">
-          <div className="absolute top-0 inset-x-0 bg-accent text-[9px] uppercase font-bold text-white tracking-wider py-0.5">Best Value</div>
+          <div className="absolute top-0 inset-x-0 bg-accent text-[9px] uppercase font-bold text-white tracking-wider py-0.5">
+            Best Value
+          </div>
           <div className="text-[9px] uppercase tracking-[0.14em] text-muted-foreground mt-2">
             Starts at
           </div>
-          <div className="mt-0.5 font-serif text-xl text-accent">&#x20B9;{Math.round(pricing.full.monthly / 30)}<span className="text-sm">/day</span></div>
-          <div className="mt-0.5 text-[10px] text-muted-foreground">
-            on our Monthly plan
+          <div className="mt-0.5 font-serif text-xl text-accent">
+            &#x20B9;{Math.round(pricing.full.monthly / 30)}
+            <span className="text-sm">/day</span>
           </div>
+          <div className="mt-0.5 text-[10px] text-muted-foreground">on our Monthly plan</div>
         </div>
       </div>
 
@@ -182,7 +126,7 @@ export function StepResults({ profile, update }: Props) {
       <div className="mt-3 rounded-[16px] border border-dashed border-[var(--color-border)] p-3 flex items-center justify-between bg-muted/5">
         <div className="flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-background border border-[var(--color-border)] shadow-sm">
-             <Icon name="shrug" size={14} className="text-muted-foreground" />
+            <Icon name="shrug" size={14} className="text-muted-foreground" />
           </div>
           <div>
             <div className="text-xs font-medium text-foreground">Unsure? Try one meal a day.</div>
@@ -190,33 +134,35 @@ export function StepResults({ profile, update }: Props) {
           </div>
         </div>
         <div className="text-right">
-           <div className="text-xs font-bold text-foreground">&#x20B9;{Math.round(pricing.half.daily)}</div>
-           <div className="text-[9px] text-muted-foreground">per meal</div>
+          <div className="text-xs font-bold text-foreground">&#x20B9;{Math.round(pricing.half.daily)}</div>
+          <div className="text-[9px] text-muted-foreground">per meal</div>
         </div>
       </div>
 
       {/* Trial breakdown */}
       <div className="mt-6 rounded-2xl border border-[var(--color-border)] bg-background p-5">
-         <h4 className="font-serif text-sm text-foreground mb-3">What&rsquo;s inside your trial?</h4>
-         <ul className="space-y-3">
-            <li className="flex items-start gap-3">
-               <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-green-50 text-green-600">
-                  <Icon name="check" size={10} />
-               </div>
-               <div className="text-xs">
-                  <span className="font-medium text-foreground">Perfectly portioned meals</span>
-                  <p className="text-muted-foreground text-[10px] mt-0.5">Calculated to {dailyCalories} kcal/day for {dogName}.</p>
-               </div>
-            </li>
-            <li className="flex items-start gap-3">
-               <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-green-50 text-green-600">
-                  <Icon name="check" size={10} />
-               </div>
-               <div className="text-xs">
-                  <span className="font-medium text-foreground">Transition guide & Wellness tracking</span>
-               </div>
-            </li>
-         </ul>
+        <h4 className="font-serif text-sm text-foreground mb-3">What&rsquo;s inside your trial?</h4>
+        <ul className="space-y-3">
+          <li className="flex items-start gap-3">
+            <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-green-50 text-green-600">
+              <Icon name="check" size={10} />
+            </div>
+            <div className="text-xs">
+              <span className="font-medium text-foreground">Perfectly portioned meals</span>
+              <p className="text-muted-foreground text-[10px] mt-0.5">
+                Calculated to {dailyCalories} kcal/day for {dogName}.
+              </p>
+            </div>
+          </li>
+          <li className="flex items-start gap-3">
+            <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-green-50 text-green-600">
+              <Icon name="check" size={10} />
+            </div>
+            <div className="text-xs">
+              <span className="font-medium text-foreground">Transition guide & Wellness tracking</span>
+            </div>
+          </li>
+        </ul>
       </div>
 
       {/* Algorithm note */}
@@ -224,19 +170,16 @@ export function StepResults({ profile, update }: Props) {
         <p className="text-[11px] leading-relaxed text-foreground italic">
           <Icon name="microscope" size={12} className="inline-flex mr-1.5 text-accent" />
           <strong>Algorithm Note:</strong>{" "}
-          Optimized for {dogName}&rsquo;s {profile.age} stage to manage {profile.activity === "high" ? "high energy output" : "ideal weight"}.
+          Optimized for {dogName}&rsquo;s {profile.age} stage to manage{" "}
+          {profile.activity === "high" ? "high energy output" : "ideal weight"}.
         </p>
       </div>
 
-      {/* Alternate recipe */}
+      {/* Alternate recipe toggle */}
       <button
         type="button"
-        onClick={() =>
-          setSelectedRecipe((r) =>
-            r.id === primary.id ? alternate : primary,
-          )
-        }
-        className="mt-4 text-center text-xs font-medium text-accent hover:text-accent/80 transition-colors"
+        onClick={() => setSelectedRecipe((r) => (r.id === primary.id ? alternate : primary))}
+        className="mt-4 cursor-pointer text-center text-xs font-medium text-accent hover:text-accent/80 transition-colors"
       >
         {selectedRecipe.id === primary.id
           ? `Also works for ${dogName}: ${alternate.name}`

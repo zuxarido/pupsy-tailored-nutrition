@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Nav } from "@/components/landing/Nav";
 import { Footer } from "@/components/landing/Footer";
 import { Icon } from "@/components/ui/Icon";
+import { PUPSY_RECIPES } from "@/lib/recipes";
+import { calculateDailyCalories } from "@/lib/nutrition";
 
 // --- Types ---
 interface MacroData {
@@ -30,30 +32,16 @@ interface MealLog {
 
 type MealType = "breakfast" | "dinner" | "snacks";
 
-// --- Hardcoded Recipes ---
-const PUPSY_RECIPES = [
-  {
-    id: "veg",
-    name: "Paneer & Rice",
-    description: "Paneer, Moong Dal, & Fresh Veggies",
-    macrosPer100g: { protein: 7.5, fat: 6.8, carbs: 10.0, calories: 130 }
-  },
-  {
-    id: "senior",
-    name: "Chicken & Quinoa",
-    description: "Chicken, Quinoa, & Bone Broth (Lower Carbs & Kcal)",
-    macrosPer100g: { protein: 7.6, fat: 1.8, carbs: 5.3, calories: 88 }
-  },
-  {
-    id: "chicken_rice",
-    name: "Chicken & Rice",
-    description: "Chicken Breast, Liver, Eggs, & Rice",
-    macrosPer100g: { protein: 13.0, fat: 7.2, carbs: 7.3, calories: 149 }
-  }
-];
+// Recipes imported from @/lib/recipes — description field mapped for display
+const WELLNESS_RECIPES = PUPSY_RECIPES.map((r) => ({
+  ...r,
+  description: r.ingredients,
+}));
+
+type DogProfileSnippet = { id: string; name: string; weight: string; activity: string };
 
 export default function WellnessTracker() {
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<DogProfileSnippet | null>(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -71,7 +59,7 @@ export default function WellnessTracker() {
   const [activeMealType, setActiveMealType] = useState<MealType>("breakfast");
   const [searchTab, setSearchTab] = useState<"pupsy" | "api">("pupsy");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedRecipe, setSelectedRecipe] = useState<typeof PUPSY_RECIPES[0] | null>(null);
+  const [selectedRecipe, setSelectedRecipe] = useState<typeof WELLNESS_RECIPES[0] | null>(null);
   const [portion, setPortion] = useState<string>("100");
   const [apiResults, setApiResults] = useState<any[]>([]);
   const [isSearchingApi, setIsSearchingApi] = useState(false);
@@ -161,6 +149,7 @@ export default function WellnessTracker() {
   };
 
   const handleCompleteSetup = async () => {
+    if (!profile) return;
     if (!setupWeight || isNaN(parseFloat(setupWeight))) return alert("Please enter a valid weight.");
     setIsSavingSetup(true);
     try {
@@ -227,11 +216,7 @@ export default function WellnessTracker() {
   const dogName = profile?.name || "your dog";
   const weightNum = parseFloat(weight) || (profile?.weight ? parseFloat(profile.weight) : 0);
   const currentEnergyLevel = (energy || profile?.activity || "moderate") as "low" | "moderate" | "high";
-  
-  // NEW FORMULA: Weight * 20 * Multiplier
-  const baseGoal = weightNum * 20;
-  const energyMultipliers: Record<"low" | "moderate" | "high", number> = { "low": 0.8, "moderate": 1.0, "high": 1.2 };
-  const dailyCalorieGoal = Math.round(baseGoal * energyMultipliers[currentEnergyLevel]);
+  const dailyCalorieGoal = calculateDailyCalories(weightNum, currentEnergyLevel);
 
   // Aggregate Macros
   const allEntries = [...mealLogs.breakfast, ...mealLogs.dinner, ...mealLogs.snacks];
@@ -374,7 +359,7 @@ export default function WellnessTracker() {
     );
   }
 
-  const filteredRecipes = PUPSY_RECIPES.filter(r => r.name.toLowerCase().includes(searchQuery.toLowerCase()));
+  const filteredRecipes = WELLNESS_RECIPES.filter((r) => r.name.toLowerCase().includes(searchQuery.toLowerCase()));
   const displayList = searchTab === "pupsy" ? filteredRecipes : apiResults;
 
   return (
