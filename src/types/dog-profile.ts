@@ -6,7 +6,6 @@ export type DogProfile = {
   sex: string;
   neutered: boolean | null;
   weight: string;
-  idealWeight: string;
   bodyCondition: string;
   activity: string;
   healthConditions: string[];
@@ -23,7 +22,6 @@ export const defaultProfile: DogProfile = {
   sex: "",
   neutered: null,
   weight: "",
-  idealWeight: "",
   bodyCondition: "",
   activity: "",
   healthConditions: [],

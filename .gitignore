@@ -40,3 +40,5 @@ build/
 .env*
 !.env.example
 
+tsconfig.tsbuildinfo
+src/hooks/use-mobile.tsx
